@@ -1,7 +1,6 @@
-import { createBrowserHistory, createMemoryHistory } from 'history';
 import React from 'react';
 import Loadable from 'react-loadable';
-import { Route, Router, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './App.css';
 
 const LazyHello = Loadable({
@@ -9,20 +8,21 @@ const LazyHello = Loadable({
   loading: () => <div>Loading...</div>,
 });
 
-const history =
-  typeof window === 'undefined'
-    ? createMemoryHistory()
-    : createBrowserHistory();
+const Routes = () => (
+  <Switch>
+    <Route exact path={'/'} render={() => 'SSR'} />
+    <Route path={'/hello/:name'} component={LazyHello} />
+    <Route render={() => 'Not found'} />
+  </Switch>
+);
 
 function App() {
-  return (
-    <Router history={history}>
-      <Switch>
-        <Route exact path={'/'} render={() => 'SSR'} />
-        <Route path={'/hello/:name'} component={LazyHello} />
-        <Route render={() => 'Not found'} />
-      </Switch>
-    </Router>
+  return typeof window === 'undefined' ? (
+    <Routes />
+  ) : (
+    <BrowserRouter>
+      <Routes />
+    </BrowserRouter>
   );
 }
 

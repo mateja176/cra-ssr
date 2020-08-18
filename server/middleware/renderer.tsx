@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
+import { StaticRouter } from 'react-router-dom';
 import App from '../../src/App';
 
 const serverRenderer: Handler = (req, res, next) => {
@@ -16,7 +17,11 @@ const serverRenderer: Handler = (req, res, next) => {
     }
 
     // render the app as a string
-    const html = ReactDOMServer.renderToString(<App />);
+    const html = ReactDOMServer.renderToString(
+      <StaticRouter location={req.path}>
+        <App />
+      </StaticRouter>,
+    );
 
     // inject the rendered app into our html and send it
     return res.send(
