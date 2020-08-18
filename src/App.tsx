@@ -5,7 +5,7 @@ import { Route, Router, Switch } from 'react-router-dom';
 import './App.css';
 
 const LazyHello = Loadable({
-  loader: () => import(/* webpackChunkName: "myNamedChunk" */ './Hello'),
+  loader: () => import(/* webpackChunkName: "Hello" */ './Hello'),
   loading: () => <div>Loading...</div>,
 });
 
